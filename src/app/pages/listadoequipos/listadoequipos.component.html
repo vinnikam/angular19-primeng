@@ -1,0 +1,19 @@
+
+<p-table [value]="equipos" [responsiveLayout]="'scroll'" class="p-datatable-gridlines"
+         showGridlines stripedRows  [paginator]="true" [rows]="10"
+         [rowsPerPageOptions]="[10, 20, 25]" >
+  <ng-template pTemplate="header" >
+    <tr>
+      <th >Nombre </th>
+      <th  >Nombre corto </th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-equipo>
+    <tr>
+      <td>{{ equipo.nombre }}</td>
+      <td>{{ equipo.nombreCorto }}</td>
+      <td><a>ver detalle</a></td>
+    </tr>
+  </ng-template>
+</p-table>
