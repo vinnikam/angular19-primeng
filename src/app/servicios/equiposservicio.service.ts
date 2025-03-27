@@ -11,6 +11,7 @@ export class EquiposService {
   private equiposUrl = `${environment.rest.endpointEquipos}`;
   constructor(private httpClient: HttpClient) { }
   getList(): Observable<any> {
-    return this.httpClient.get<Equipo>(`${this.equiposUrl}/equipos/list`);
+    return this.httpClient.get<Equipo[]>(`${this.equiposUrl}/equipos/`);
+
   }
 }
