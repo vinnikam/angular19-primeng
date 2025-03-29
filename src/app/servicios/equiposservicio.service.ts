@@ -8,10 +8,14 @@ import {Equipo} from '../model/equipo';
   providedIn: 'root'
 })
 export class EquiposService {
-  private equiposUrl = `${environment.rest.endpointEquipos}`;
+  private equiposUrl = `${environment.rest.endpointGeneral}`;
   constructor(private httpClient: HttpClient) { }
   getList(): Observable<any> {
     return this.httpClient.get<Equipo[]>(`${this.equiposUrl}/equipos/`);
+
+  }
+  create(equipo: Equipo): Observable<any> {
+    return this.httpClient.post(`${this.equiposUrl}/equipos/`, equipo);
 
   }
 }

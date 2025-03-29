@@ -5,6 +5,9 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputText} from 'primeng/inputtext';
 import {ButtonDirective} from 'primeng/button';
 import {NgIf} from '@angular/common';
+import {DirectoresService} from '../../servicios/directores.service';
+import {EquiposService} from '../../servicios/equiposservicio.service';
+import {DirectorTecnico} from '../../model/director-tecnico';
 
 @Component({
   selector: 'app-crearequipos',
@@ -23,28 +26,28 @@ import {NgIf} from '@angular/common';
 export class CrearequiposComponent implements OnInit {
   equipoForm: FormGroup; // Formulario para el equipo
   directorForm: FormGroup; // Formulario para el director
-  directores: any[] = []; // Lista de directores
+  directores: DirectorTecnico[] = []; // Lista de directores
   mostrarModal: boolean = false; // Estado del modal
+  director!:DirectorTecnico;
 
-  constructor(private fb: FormBuilder) {
-    // Inicialización de los formularios
+  constructor(private fb: FormBuilder,
+              private directorService: DirectoresService,
+              private equipoService: EquiposService) {
     this.equipoForm = this.fb.group({
       nombreEquipo: ['', Validators.required],
+      nombreCorto: ['', Validators.required],
       directorSeleccionado: [null, Validators.required],
     });
 
     this.directorForm = this.fb.group({
-      nombre: ['', Validators.required],
-      especialidad: ['', Validators.required],
+      nombreCompleto: ['', Validators.required],
+      nacionalidad: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     // Simular la obtención de directores (puede ser desde un servicio)
-    this.directores = [
-      { id: 1, nombre: 'Juan Pérez', especialidad: 'Entrenador táctico' },
-      { id: 2, nombre: 'Ana Gómez', especialidad: 'Preparador físico' },
-    ];
+    this.obtenerDirectores();
   }
 
   mostrarModalDirector(): void {
@@ -53,28 +56,52 @@ export class CrearequiposComponent implements OnInit {
 
   guardarDirector(): void {
     if (this.directorForm.valid) {
-      const nuevoDirector = {
-        ...this.directorForm.value,
-        id: this.directores.length + 1,
-      };
-      this.directores.push(nuevoDirector);
-
-      // Resetear el formulario del director
-      this.directorForm.reset();
-      this.mostrarModal = false;
+      this.director = {
+        nombreCompleto : this.directorForm.value.nombreCompleto,
+        nacionalidad: this.directorForm.value.nacionalidad,
+        disponible: true
+      }
+      this.directorService.create(this.director ).subscribe({
+        next: (data) => {
+          this.directores.push(this.director);
+        }, error: (error) => {
+          console.error('No guardo el director', error);
+        },
+      });
     }
-  }
+
+    // Resetear el formulario del director
+    this.directorForm.reset();
+    this.mostrarModal = false;
+    }
+
 
   guardarEquipo(): void {
     if (this.equipoForm.valid) {
+
       const equipo = {
         nombre: this.equipoForm.value.nombreEquipo,
-        director: this.equipoForm.value.directorSeleccionado,
+        nombreCorto: this.equipoForm.value.nombreCorto,
+        directorTecnico: this.equipoForm.value.directorSeleccionado,
       };
-      console.log('Equipo creado:', equipo);
-      // Aquí podrías enviar el equipo a un servicio REST
-      alert('¡Equipo creado con éxito!');
+      this.equipoService.create(equipo).subscribe({
+        next: (data) => {
+          alert('Equipo creado ')
+        }, error: (error) => {
+          console.error('No guardo el equipo', error);
+        },
+      });
       this.equipoForm.reset(); // Resetear el formulario de equipo
     }
   }
+
+  obtenerDirectores() {
+      this.directorService.getList().subscribe({
+        next: (data) => {
+          this.directores = data
+        }, error: (error) => {
+          console.error('No hay directores', error);
+        },
+      })
+    }
 }

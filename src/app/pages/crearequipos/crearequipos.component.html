@@ -16,6 +16,18 @@
       >El nombre del equipo es obligatorio.</small
       >
     </div>
+    <div class="p-field">
+      <label for="nombreEquipo">Nombre corto del Equipo</label>
+      <input
+        id="nombreCorto"
+        type="text"
+        pInputText
+        formControlName="nombreCorto"
+        placeholder="Ingrese nombre corto del equipo"
+      />
+      <small *ngIf="equipoForm.get('nombreCorto')?.invalid && equipoForm.get('nombreCorto')?.touched">
+        El nombre corto del equipo es obligatorio.</small>
+    </div>
 
     <!-- Selector de directores -->
     <div class="p-field">
@@ -24,9 +36,8 @@
         id="director"
         [options]="directores"
         formControlName="directorSeleccionado"
-        optionLabel="nombre"
-        placeholder="Seleccione un director"
-      ></p-dropdown>
+        optionLabel="nombreCompleto"
+        placeholder="Seleccione un director"></p-dropdown>
       <button pButton type="button" label="Crear Nuevo Director" icon="pi pi-plus" (click)="mostrarModalDirector()"></button>
     </div>
 
@@ -51,24 +62,23 @@
           id="nombreDirector"
           type="text"
           pInputText
-          formControlName="nombre"
+          formControlName="nombreCompleto"
           placeholder="Ingrese nombre del director"
         />
-        <small *ngIf="directorForm.get('nombre')?.invalid && directorForm.get('nombre')?.touched"
-        >El nombre del director es obligatorio.</small
-        >
+        <small *ngIf="directorForm.get('nombreCompleto')?.invalid && directorForm.get('nombreCompleto')?.touched">
+          El nombre del director es obligatorio.</small>
       </div>
       <div class="p-field">
-        <label for="especialidadDirector">Especialidad</label>
+        <label for="nacionalidadDirector">Nacionalidad</label>
         <input
-          id="especialidadDirector"
+          id="nacionalidadDirector"
           type="text"
           pInputText
-          formControlName="especialidad"
-          placeholder="Ingrese especialidad del director"
+          formControlName="nacionalidad"
+          placeholder="Ingrese nacionalidad del director"
         />
-        <small *ngIf="directorForm.get('especialidad') && directorForm.get('especialidad')?.invalid && directorForm.get('especialidad')?.touched">
-          La especialidad es obligatoria.
+        <small *ngIf="directorForm.get('nacionalidad') && directorForm.get('nacionalidad')?.invalid && directorForm.get('nacionalidad')?.touched">
+          La nacionalidad es obligatoria.
         </small>
       </div>
     </div>

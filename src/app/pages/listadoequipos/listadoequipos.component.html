@@ -6,6 +6,7 @@
     <tr>
       <th >Nombre </th>
       <th  >Nombre corto </th>
+      <th  >Director Técnico </th>
       <th>Acciones</th>
     </tr>
   </ng-template>
@@ -13,6 +14,7 @@
     <tr>
       <td>{{ equipo.nombre }}</td>
       <td>{{ equipo.nombreCorto }}</td>
+      <td>{{ equipo.directorTecnico?.nombreCompleto }}</td>
       <td><a>ver detalle</a></td>
     </tr>
   </ng-template>
