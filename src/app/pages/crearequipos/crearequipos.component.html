@@ -1,0 +1,77 @@
+<div class="p-fluid">
+  <h3>Crear Equipo</h3>
+
+  <!-- Formulario del equipo -->
+  <form [formGroup]="equipoForm" (ngSubmit)="guardarEquipo()">
+    <div class="p-field">
+      <label for="nombreEquipo">Nombre del Equipo</label>
+      <input
+        id="nombreEquipo"
+        type="text"
+        pInputText
+        formControlName="nombreEquipo"
+        placeholder="Ingrese nombre del equipo"
+      />
+      <small *ngIf="equipoForm.get('nombreEquipo')?.invalid && equipoForm.get('nombreEquipo')?.touched"
+      >El nombre del equipo es obligatorio.</small
+      >
+    </div>
+
+    <!-- Selector de directores -->
+    <div class="p-field">
+      <label for="director">Seleccionar Director</label>
+      <p-dropdown
+        id="director"
+        [options]="directores"
+        formControlName="directorSeleccionado"
+        optionLabel="nombre"
+        placeholder="Seleccione un director"
+      ></p-dropdown>
+      <button pButton type="button" label="Crear Nuevo Director" icon="pi pi-plus" (click)="mostrarModalDirector()"></button>
+    </div>
+
+    <!-- Botón para guardar el equipo -->
+    <button
+      pButton
+      type="submit"
+      label="Guardar Equipo"
+      icon="pi pi-check"
+      [disabled]="equipoForm.invalid"
+    ></button>
+  </form>
+</div>
+
+<!-- Modal para crear director -->
+<p-dialog header="Crear Director" [(visible)]="mostrarModal">
+  <form [formGroup]="directorForm" (ngSubmit)="guardarDirector()">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="nombreDirector">Nombre del Director</label>
+        <input
+          id="nombreDirector"
+          type="text"
+          pInputText
+          formControlName="nombre"
+          placeholder="Ingrese nombre del director"
+        />
+        <small *ngIf="directorForm.get('nombre')?.invalid && directorForm.get('nombre')?.touched"
+        >El nombre del director es obligatorio.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="especialidadDirector">Especialidad</label>
+        <input
+          id="especialidadDirector"
+          type="text"
+          pInputText
+          formControlName="especialidad"
+          placeholder="Ingrese especialidad del director"
+        />
+        <small *ngIf="directorForm.get('especialidad') && directorForm.get('especialidad')?.invalid && directorForm.get('especialidad')?.touched">
+          La especialidad es obligatoria.
+        </small>
+      </div>
+    </div>
+    <button pButton type="submit" label="Guardar Director" icon="pi pi-check" [disabled]="directorForm.invalid"></button>
+  </form>
+</p-dialog>
